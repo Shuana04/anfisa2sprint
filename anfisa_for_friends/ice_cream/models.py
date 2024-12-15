@@ -78,6 +78,10 @@ class IceCream(PublishedModel):
     class Meta:
         verbose_name = 'мороженое'
         verbose_name_plural = 'Мороженое'
+        # Сначала сортируем по полю output_order, 
+        # а если у нескольких объектов значения output_order совпадают-- 
+        # сортируем по title.
+        ordering = ('output_order', 'title')
 
     def __str__(self):
         return self.title 

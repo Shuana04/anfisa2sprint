@@ -5,9 +5,7 @@ def ice_cream_detail(request, pk):
     template = 'ice_cream/detail.html'
     ice_cream = get_object_or_404(
         # Первый аргумент - QuerySet:
-        IceCream.objects.values(
-            'title', 'description'
-        ).filter(is_published=True),
+        IceCream.objects.filter(is_published=True, category__is_published=True),
         # Второй аргумент - условие, по которому фильтруются записи из QuerySet:
         pk=pk
     )
@@ -19,5 +17,10 @@ def ice_cream_detail(request, pk):
 
 def ice_cream_list(request):
     template = 'ice_cream/list.html'
-    context = {}
+    ice_cream_list = IceCream.objects.select_related('category'
+    ).filter(is_published=True, category__is_published=True
+    ).order_by('category')
+    context = {
+        'ice_cream_list': ice_cream_list
+    }
     return render(request, template, context)
